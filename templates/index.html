@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Research Hub | Understand research papers faster</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body class="fade-up">
+  <!-- Minimalist Navigation -->
+  <header class="navbar">
+    <div class="container">
+      <a href="{{ url_for('home') }}" class="logo">AI Research Hub</a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <!-- Removed Login link and updated Get Started to be the only auth entry point -->
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Get Started</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" style="width: 20px; height: 20px;">
+            <!-- Icon will be set by JS -->
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Academic Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-container">
+        <h1 class="hero-title">Unlock the potential of <span class="gradient-text">scientific knowledge.</span></h1>
+        <p class="hero-subtitle">
+          Transform dense academic PDFs into actionable insights. Identify key concepts, extract methodologies, and
+          accelerate your literature review with AI-powered precision.
+        </p>
+        <div class="hero-actions">
+          <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">Start Researching <span
+              style="margin-left: 8px">→</span></a>
+          <a href="#features" class="btn btn-outline btn-lg">How it works</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Value Proposition Grid -->
+    <section id="features" class="features-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>The Intelligent Research Workbench</h2>
+          <p>Built for phDs, scientists, and analysts who need to read deeper and faster.</p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+              </svg>
+            </div>
+            <h3>Smart Extraction</h3>
+            <p>Automatically identify and parse title, authors, affiliations, and publication dates from unstructured
+              PDFs.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="9" y1="21" x2="9" y2="9"></line>
+              </svg>
+            </div>
+            <h3>Structured Summaries</h3>
+            <p>Get broken-down summaries including Objectives, Methodology, and Key Findings, not just a blob of text.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                </path>
+              </svg>
+            </div>
+            <h3>Research Insights</h3>
+            <p>Go beyond the abstract. Generate novel research directions, critique the study, and find limitations
+              instantly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-box">
+          <h2>Ready to accelerate your discovery?</h2>
+          <p>Join thousands of researchers using AI to stay on top of their field.</p>
+          <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">Get Started</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-col">
+          <span class="logo">AI Research Hub</span>
+          <p>© 2026 AI Research Hub Inc.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

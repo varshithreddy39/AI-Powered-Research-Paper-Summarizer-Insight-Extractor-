@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | AI Research Hub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body class="fade-up">
+  <header class="navbar">
+    <div class="container">
+      <a href="{{ url_for('home') }}" class="logo">AI Research Hub</a>
+      <div class="nav-links">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" style="width: 20px; height: 20px;"></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-layout">
+    <!-- Updated sidebar with all required navigation items -->
+    <aside class="dashboard-sidebar">
+      <nav class="sidebar-nav">
+        <a href="{{ url_for('dashboard') }}" class="sidebar-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="{{ url_for('upload_page') }}" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          Upload
+        </a>
+        <a href="{{ url_for('documents_page') }}" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          Documents
+        </a>
+        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1rem 0;">
+        <!-- Updated Logout to link to index.html instead of login.html -->
+        <a href="{{ url_for('home') }}" class="sidebar-link" style="color: #ef4444;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Logout
+        </a>
+      </nav>
+    </aside>
+
+    <div class="dashboard-main">
+      <!-- Replace welcome section with metrics row -->
+      <!-- Metrics Row -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon-bg" style="background-color: #e0f2fe; color: #0284c7;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <div>
+            <span class="metric-value" id="stat-uploaded">-</span>
+            <span class="metric-label">Papers Uploaded</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-bg" style="background-color: #dcfce7; color: #166534;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+          </div>
+          <div>
+            <span class="metric-value" id="stat-summaries">-</span>
+            <span class="metric-label">Summaries</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-bg" style="background-color: #f3e8ff; color: #7e22ce;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+          </div>
+          <div>
+            <span class="metric-value" id="stat-insights">-</span>
+            <span class="metric-label">Insights</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-bg" style="background-color: #ffedd5; color: #c2410c;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </div>
+          <div>
+            <span class="metric-value" id="stat-queue">0</span>
+            <span class="metric-label">Processing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Upload CTA card -->
+      <div class="upload-cta-card">
+        <div class="upload-cta-content">
+          <h3>Upload Research Paper</h3>
+          <p>Upload academic PDFs to extract summaries and structured insights.</p>
+        </div>
+        <a href="{{ url_for('upload_page') }}" class="btn btn-primary">Upload Paper</a>
+      </div>
+
+      <!-- Main Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- Recent Documents Section (Left) -->
+        <div class="card" style="grid-column: span 2;">
+          <h3
+            style="margin-bottom: 1.5rem; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center;">
+            Recent Documents
+            <a href="{{ url_for('documents_page') }}"
+              style="font-size: 0.85rem; color: var(--accent-primary); text-decoration: none;">View All</a>
+          </h3>
+          <div class="doc-list">
+            <!-- Real data injected by JS -->
+            <div style="padding: 2rem; text-align: center; color: var(--text-secondary);">Loading documents...</div>
+          </div>
+        </div>
+
+        <!-- Analytics Section (Right) -->
+        <div class="card">
+          <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Repository Analytics</h3>
+          <div style="position: relative; height: 250px; width: 100%;">
+            <canvas id="analyticsChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

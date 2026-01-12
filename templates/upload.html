@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload | AI Research Hub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body class="fade-up">
+  <header class="navbar">
+    <div class="container">
+      <a href="{{ url_for('home') }}" class="logo">AI Research Hub</a>
+      <div class="nav-links">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" style="width: 20px; height: 20px;"></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-layout">
+    <aside class="dashboard-sidebar">
+      <nav class="sidebar-nav">
+        <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="{{ url_for('upload_page') }}" class="sidebar-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          Upload
+        </a>
+        <a href="{{ url_for('documents_page') }}" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2-2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Documents
+        </a>
+        <!-- Removed Profile link from sidebar -->
+        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1rem 0;">
+        <!-- Updated Logout to link to index.html instead of login.html -->
+        <a href="{{ url_for('home') }}" class="sidebar-link" style="color: #ef4444;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Logout
+        </a>
+      </nav>
+    </aside>
+
+    <div class="dashboard-main">
+      <!-- Pre-upload state: simple upload area -->
+      <div id="pre-upload-state">
+        <h2 style="margin-bottom: 2rem; font-size: 1.5rem;">Upload Research Paper</h2>
+        <div style="max-width: 640px; margin: 0 auto;">
+          <div id="upload-area" class="upload-area">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+              style="margin: 0 auto; color: var(--text-secondary); opacity: 0.6;">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <h3>Drag & Drop PDF Here</h3>
+            <p>or click to browse</p>
+            <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.75rem;">Supported: Academic PDFs
+              • Max size: 20MB</p>
+            <input type="file" id="file-input" accept="application/pdf" hidden>
+          </div>
+
+          <!-- Progress bar during upload parsing -->
+          <div id="upload-progress" style="display: none; padding: 1.5rem; text-align: center;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.875rem; color: var(--text-secondary);">Parsing document…</span>
+              <span id="upload-status" style="font-size: 0.875rem; color: var(--text-secondary);"></span>
+            </div>
+            <div style="height: 3px; background-color: var(--border-color); border-radius: 2px; overflow: hidden;">
+              <div id="progress-bar"
+                style="height: 100%; background-color: var(--accent-primary); width: 0%; transition: width 0.15s linear;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post-upload state: vertical layout with Section 1 (top), Section 2 (middle buttons), Section 3 (bottom output) -->
+      <div id="post-upload-state" style="display: none;">
+        <!-- SECTION 1: EXTRACTED RAW TEXT (TOP) -->
+        <div class="vertical-section">
+          <div class="section-card">
+            <div class="section-header">Extracted Raw Text</div>
+            <div class="section-body">
+              <div class="insight-block">
+                <h2 style="font-size: 1.25rem; margin-bottom: 0.75rem; font-weight: 700;" id="meta-title">No Title
+                  Detected</h2>
+                <div
+                  style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
+                  <p style="font-size: 0.9rem; margin-bottom: 0.375rem;"><strong>Authors:</strong> <span
+                      id="meta-authors">Unknown</span></p>
+                  <p style="font-size: 0.9rem;"><strong>Year:</strong> <span id="meta-year">Unknown</span></p>
+                  <p style="font-size: 0.9rem;"><strong>Source:</strong> <span id="meta-source">Unknown</span></p>
+                </div>
+              </div>
+
+              <!-- Section tabs for navigation -->
+              <div
+                style="display: flex; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.8125rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+                <button onclick="switchSection('abstract')"
+                  style="background: none; border: none; color: var(--accent-primary); cursor: pointer; padding: 0; font-weight: 500;">Abstract</button>
+                <button onclick="switchSection('methods')"
+                  style="background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 0; font-weight: 500;">Methods</button>
+                <button onclick="switchSection('results')"
+                  style="background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 0; font-weight: 500;">Results</button>
+                <button onclick="switchSection('conclusion')"
+                  style="background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 0; font-weight: 500;">Conclusion</button>
+              </div>
+
+              <!-- Raw text preview -->
+              <div class="raw-text-box">Abstract: In this study, we investigate the neural mechanisms underlying
+                perceptual decision-making tasks in ambiguous sensory environments. Using advanced neuroimaging
+                techniques, we identified a novel role for prefrontal cortex fluctuations in modulating decision speed.
+
+                Methods: Participants performed a two-alternative forced choice task while undergoing high-resolution
+                fMRI. We measured both behavioral performance and neural activity across distributed cortical networks.
+
+                Results: Analysis revealed that baseline prefrontal activity significantly predicted individual reaction
+                times. Trial-by-trial fluctuations in this baseline correlated with decision confidence ratings.
+
+                Conclusion: These findings suggest that decision-making processes are dynamically regulated by ongoing
+                neural fluctuations rather than being fixed computations.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: AI ACTION BUTTONS (MIDDLE) -->
+        <div class="vertical-section">
+          <div class="button-row">
+            <button class="btn btn-primary" onclick="switchView('summary')">Generate Summary</button>
+            <button class="btn btn-secondary" onclick="switchView('concepts')">Extract Key Concepts</button>
+            <button class="btn btn-secondary" onclick="switchView('insights')">Generate Research Insights</button>
+            <button class="btn btn-secondary" onclick="switchView('graph')">Build Knowledge Graph</button>
+            <button class="btn btn-secondary" onclick="switchView('search')">Semantic Search</button>
+          </div>
+        </div>
+
+        <!-- SECTION 3: DYNAMIC OUTPUT AREA (BOTTOM) -->
+        <div class="vertical-section">
+          <div class="section-card">
+            <div class="section-header">Analysis Output</div>
+            <div class="section-body">
+              <!-- Default empty state -->
+              <div id="view-default">
+                <p style="color: var(--text-secondary); text-align: center; padding: 2rem 1rem;">No analysis generated
+                  yet. Select an option above.</p>
+              </div>
+
+              <!-- Summary view -->
+              <div id="view-summary" style="display: none;">
+                <div class="insight-block">
+                  <p style="color: var(--text-secondary); margin-bottom: 1rem;">Summary has not been generated yet.</p>
+                  <button class="btn btn-secondary" style="width: 100%;" disabled>Generating...</button>
+                </div>
+              </div>
+
+              <!-- Key Concepts view: Empty state -->
+              <div id="view-concepts" style="display: none;">
+                <div class="insight-block">
+                  <h3>Key Concepts</h3>
+                  <p style="color: var(--text-secondary); margin-bottom: 1rem;">Key concepts have not been generated
+                    yet.</p>
+                  <button class="btn btn-secondary" style="width: 100%;" disabled>Generate Concepts</button>
+                </div>
+              </div>
+
+              <!-- Research Insights view: Empty state -->
+              <div id="view-insights" style="display: none;">
+                <div class="insight-block">
+                  <h3>Research Insights</h3>
+                  <p style="color: var(--text-secondary); margin-bottom: 1rem;">Research insights have not been
+                    generated yet.</p>
+                  <button class="btn btn-secondary" style="width: 100%;" disabled>Generate Insights</button>
+                </div>
+              </div>
+
+              <!-- Knowledge Graph view: Empty canvas -->
+              <div id="view-graph" style="display: none;">
+                <div class="insight-block">
+                  <h3>Knowledge Graph</h3>
+                  <div
+                    style="border: 2px dashed var(--border-color); border-radius: var(--radius); padding: 4rem 2rem; text-align: center; background-color: var(--bg-primary); min-height: 300px; display: flex; align-items: center; justify-content: center;">
+                    <p style="color: var(--text-secondary);">Knowledge graph visualization will appear here.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Semantic Search view: Empty search -->
+              <div id="view-search" style="display: none;">
+                <div class="insight-block">
+                  <h3>Semantic Search</h3>
+                  <input type="text" placeholder="Search research concepts..."
+                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius); margin-bottom: 1.5rem; background-color: var(--bg-secondary); color: var(--text-primary);"
+                    disabled>
+                  <p style="color: var(--text-secondary); text-align: center;">No results yet. Enable semantic search to
+                    explore related concepts.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
